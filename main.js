@@ -27,6 +27,7 @@ function displayProducts(products) {
             <th><i class="fas fa-image"></i>Image</th>
             <th><i class="fas fa-hashtag"></i>ID</th>
             <th><i class="fas fa-tag"></i>Title</th>
+            <th><i class="fas fa-link"></i>Slug</th>
             <th><i class="fas fa-dollar-sign"></i>Price</th>
             <th><i class="fas fa-info-circle"></i>Description</th>
             <th><i class="fas fa-folder"></i>Category</th>
@@ -46,6 +47,7 @@ function displayProducts(products) {
             <td><img src="${imageUrl}" alt="${item.title}" class="product-image" onerror="this.src='https://via.placeholder.com/80x80?text=No+Image'"></td>
             <td>${item.id}</td>
             <td>${item.title}</td>
+            <td><code class="slug-code">${item.slug}</code></td>
             <td><span class="price-highlight">$${item.price}</span></td>
             <td>${item.description}</td>
             <td><span class="category-badge">${item.category?.name || 'No Category'}</span></td>

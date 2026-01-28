@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛍️ Danh Sách Sản Phẩm</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            letter-spacing: -1px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
+            font-weight: 300;
+        }
+
+        .loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            color: white;
+        }
+
+        .loading i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: spin 2s linear infinite;
+        }
+
+        .loading p {
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            margin: 20px 0;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+        }
+
+        .products-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .products-table th {
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border-bottom: 3px solid rgba(255,255,255,0.2);
+        }
+
+        .products-table th i {
+            margin-right: 8px;
+            opacity: 0.8;
+        }
+
+        .products-table tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .products-table tbody tr:hover {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .products-table tbody tr:nth-child(even) {
+            background-color: #fafbfc;
+        }
+
+        .products-table tbody tr:nth-child(even):hover {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e0e8ff 100%);
+        }
+
+        .products-table td {
+            padding: 18px 15px;
+            vertical-align: middle;
+            border: none;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.1);
+        }
+
+        .products-table td:nth-child(1) {
+            width: 100px;
+            text-align: center;
+        }
+
+        .products-table td:nth-child(2) {
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1.1rem;
+            width: 80px;
+        }
+
+        .products-table td:nth-child(3) {
+            font-weight: 600;
+            color: #2d3748;
+            max-width: 250px;
+            word-wrap: break-word;
+        }
+
+        .products-table td:nth-child(4) {
+            font-weight: 700;
+            color: #38a169;
+            font-size: 1.2rem;
+            width: 120px;
+        }
+
+        .products-table td:nth-child(5) {
+            color: #4a5568;
+            max-width: 400px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .products-table td:nth-child(6) {
+            width: 180px;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 25px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .price-highlight {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .error {
+            background: linear-gradient(135deg, #fc8181 0%, #e53e3e 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 10px 30px rgba(252, 129, 129, 0.3);
+        }
+
+        .error i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .error h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .products-table {
+                font-size: 0.85rem;
+            }
+
+            .products-table th,
+            .products-table td {
+                padding: 12px 8px;
+            }
+
+            .products-table td:nth-child(3),
+            .products-table td:nth-child(5) {
+                max-width: 150px;
+            }
+
+            .product-image {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .products-table th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)) {
+                display: none;
+            }
+
+            .products-table td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(3)) {
+                display: none;
+            }
+
+            .product-image {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1><i class="fas fa-store"></i> Danh Sách Sản Phẩm</h1>
+            <p>Khám phá bộ sưu tập sản phẩm chất lượng cao của chúng tôi</p>
+        </div>
+
+        <div id="app">
+            <div class="loading">
+                <i class="fas fa-spinner"></i>
+                <p>Đang tải sản phẩm...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
